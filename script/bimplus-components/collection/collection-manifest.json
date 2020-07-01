@@ -1,0 +1,44 @@
+{
+  "components": [
+    {
+      "tag": "bimplus-language-menu",
+      "dependencies": [],
+      "componentClass": "BimplusLanguageMenu",
+      "componentPath": "components/bimplus-language-menu/bimplus-language-menu.js",
+      "styles": {
+        "$": {
+          "stylePaths": [
+            "components/bimplus-language-menu/bimplus-language-menu.less"
+          ]
+        }
+      },
+      "props": [
+        {
+          "name": "selectedLanguage",
+          "type": "String",
+          "mutable": true,
+          "reflectToAttr": true,
+          "attr": "selected-language"
+        }
+      ],
+      "states": [
+        {
+          "name": "_menuOpened"
+        }
+      ],
+      "events": [
+        {
+          "event": "bimplusLanguageSelected"
+        }
+      ],
+      "shadow": true
+    }
+  ],
+  "collections": [],
+  "compiler": {
+    "name": "@stencil/core",
+    "version": "0.16.2",
+    "typescriptVersion": "3.2.2"
+  },
+  "bundles": []
+}

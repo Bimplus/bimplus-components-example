@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Bimplus Component Example</title>
+  <link href='https://fonts.googleapis.com/css?family=Source+Sans+Pro' rel='stylesheet' type='text/css'>
+  
+  <script src="https://unpkg.com/bimplus-components@0.0.48/dist/bimplus-components/bimplus.js"></script>
+</head>
+<body>
+  <style>
+    *,html {
+      font-size: 100%;
+      margin: 0;
+      padding: 0;    
+    }
+
+    body{
+      background-color: gray;
+    }
+
+    bimplus-main-menu{
+      height: 100vh;
+    }
+
+    bimplus-main-menu.hidden{
+      display: none;
+    }
+
+  </style>
+
+  <!-- bimplus navbar is container for other components -->
+  <bimplus-navbar 
+    team-info="Bimplus demo team" 
+    project-info="Quickstart project" 
+    is-dev 
+    is-navbar-menu-visible>
+    
+    <!-- storage info component -->
+    <bimplus-storage-info selected-language="en" used-storage="80"></bimplus-storage-info>
+
+    <!-- contact component -->
+    <bimplus-contact></bimplus-contact>
+
+    <!-- touch menu component -->
+    <bimplus-touch-menu selected-mode="desktop"></bimplus-touch-menu>
+
+    <!-- language menu component -->
+    <bimplus-language-menu selected-language="en"></bimplus-language-menu>
+
+    <!-- user menu component -->
+    <bimplus-user-menu user-name="Demo user" ></bimplus-user-menu>
+
+  </bimplus-navbar>
+  
+  <!-- bimplus main menu component -->
+  <bimplus-main-menu 
+    selected-language="en"
+    project-name="00 Quickstart project"  
+    project-image-url="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTMS36RRWYaTysG471mlormL1bYN3-QIabbo30rDitKRoaDs3EA&s" 
+    is-dev
+    show-overlay = false
+    is-collapsed = false
+    menu-active-item = "bimexplorer"
+    >
+  </bimplus-main-menu>
+
+  <script>
+    // language menu script
+    const navbar = document.querySelector('bimplus-navbar');
+    const storageInfo = document.querySelector('bimplus-storage-info');
+    const contact = document.querySelector('bimplus-contact');
+    const touchMenu = document.querySelector('bimplus-touch-menu');
+    const lanMenu = document.querySelector('bimplus-language-menu');
+    const userMenu = document.querySelector('bimplus-user-menu');
+
+    const mainMenu = document.querySelector('bimplus-main-menu');
+
+    // one way of communication with the component - directly define function which will be called 
+    window.BimPlus = {
+      bimplusNavbarClicked : (event) => {
+        alert(`Navbar clicked. Clicked on: ${event.detail}`)
+
+        if (event.detail === 'menu'){
+          mainMenu.classList.toggle("hidden");
+        } 
+      }
+    };
+
+    // another way of communication is to capture events
+    storageInfo.addEventListener('bimplusStorageInfoClicked', (event) => {
+      //console.log(`EVENT : bimplusStorageInfoClicked. VALUE: ${event.detail}`);
+      alert(`This is storage info action handler ${event.detail}`);
+    });
+
+    contact.addEventListener('bimplusContactClicked', (event) => {
+      // console.log(`EVENT : bimplusContactClicked. VALUE: ${event.detail}`);
+      alert(`This is contact action handler ${event.detail}`);
+    });
+
+    touchMenu.addEventListener('bimplusTouchModeSelected', (event) => {
+      var isTouch = event.detail === 'touch';
+      alert(`EVENT : bimplusTouchModeSelected. VALUE: ${event.detail}`);
+      touchMenu.setAttribute('selected-Mode', event.detail);
+      navbar.setAttribute('is-touch', isTouch);
+      mainMenu.setAttribute('is-touch', isTouch);
+      userMenu.setAttribute('is-touch', isTouch);
+    });
+
+    lanMenu.addEventListener('bimplusLanguageSelected', (event) => {
+      alert(`EVENT : bimplusLanguageSelected. VALUE: ${event.detail}`);
+      lanMenu.setAttribute('selected-language', event.detail);
+      userMenu.setAttribute('selected-language', event.detail);
+      touchMenu.setAttribute('selected-language', event.detail);
+      storageInfo.setAttribute('selected-language', event.detail);
+      mainMenu.setAttribute('selected-language', event.detail);
+    });
+
+    userMenu.addEventListener('bimplusUserMenuClicked', (event) => {
+      alert(`EVENT : bimplusUserMenuClicked. INDEX: ${event.detail.index} ACTION: ${event.detail.action}`);
+    });
+
+    mainMenu.addEventListener('bimplusMainMenuClicked', (event) => {
+      alert(`EVENT : bimplusMainMenuClicked. ACTION: ${event.detail.action} TYPE: ${event.detail.type}`);
+    });
+
+    mainMenu.addEventListener('bimplusMainMenuOverlayClicked', (event) => {
+      alert(`EVENT : bimplusMainMenuOverlayClicked.`);
+    });
+
+  </script>
+
+</body>
+</html>

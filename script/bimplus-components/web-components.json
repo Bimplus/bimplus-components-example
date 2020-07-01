@@ -1,0 +1,15 @@
+{
+  "tags": [
+    {
+      "label": "bimplus-language-menu",
+      "description": "",
+      "attributes": [
+        {
+          "label": "selected-language",
+          "description": "--------------------------------------------------------------------------\r\nproperties\r\n--------------------------------------------------------------------------",
+          "required": false
+        }
+      ]
+    }
+  ]
+}
