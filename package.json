@@ -1,0 +1,25 @@
+{
+  "name": "bimplus-components-example",
+  "version": "0.0.2",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "cleanDist": "rimraf ./dist",
+    "copyWholeDist": "cpy \"./node_modules/bimplus-webcomponents/dist/**\" \"./dist/\"",
+    "copyIndex": "cpy \"./index.html\" \"./dist\"",
+    "copyLocaleImages": "cpy \"./assets/images/**\" \"./dist/assets/images\"",
+    "build": "npm run cleanDist && npm run copyWholeDist && npm run copyLocaleImages && npm run copyIndex",
+    "serve": "npm run build && live-server --open=dist --verbose",
+    "start": "npm run serve"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "bimplus-webcomponents": "0.0.182"
+  },
+  "devDependencies": {
+    "cpy-cli": "^5.0.0",
+    "live-server": "^1.2.2",
+    "rimraf": "^6.0.1"
+  }
+}

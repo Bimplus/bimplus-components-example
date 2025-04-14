@@ -1,134 +1,612 @@
 <!DOCTYPE html>
 <html dir="ltr" lang="en">
-<head>
-  <meta charset="utf-8">
-  <title>Bimplus Component Example</title>
-  <link href='https://fonts.googleapis.com/css?family=Source+Sans+Pro' rel='stylesheet' type='text/css'>
-  
-  <script src="https://unpkg.com/bimplus-components@0.0.48/dist/bimplus-components/bimplus.js"></script>
-</head>
-<body>
-  <style>
-    *,html {
-      font-size: 100%;
-      margin: 0;
-      padding: 0;    
-    }
+  <head>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="./styles.css"/>
+    <title>Bimplus Component Example</title>
+  </head>
 
-    body{
-      background-color: gray;
-    }
-
-    bimplus-main-menu{
-      height: 100vh;
-    }
-
-    bimplus-main-menu.hidden{
-      display: none;
-    }
-
-  </style>
-
-  <!-- bimplus navbar is container for other components -->
-  <bimplus-navbar 
-    team-info="Bimplus demo team" 
-    project-info="Quickstart project" 
-    is-dev 
-    is-navbar-menu-visible>
-    
-    <!-- storage info component -->
-    <bimplus-storage-info selected-language="en" used-storage="80"></bimplus-storage-info>
-
-    <!-- contact component -->
-    <bimplus-contact></bimplus-contact>
-
-    <!-- touch menu component -->
-    <bimplus-touch-menu selected-mode="desktop"></bimplus-touch-menu>
-
-    <!-- language menu component -->
-    <bimplus-language-menu selected-language="en"></bimplus-language-menu>
-
-    <!-- user menu component -->
-    <bimplus-user-menu user-name="Demo user" ></bimplus-user-menu>
-
-  </bimplus-navbar>
-  
-  <!-- bimplus main menu component -->
-  <bimplus-main-menu 
-    selected-language="en"
-    project-name="00 Quickstart project"  
-    project-image-url="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTMS36RRWYaTysG471mlormL1bYN3-QIabbo30rDitKRoaDs3EA&s" 
-    is-dev
-    show-overlay = false
-    is-collapsed = false
-    menu-active-item = "bimexplorer"
-    >
-  </bimplus-main-menu>
-
-  <script>
-    // language menu script
-    const navbar = document.querySelector('bimplus-navbar');
-    const storageInfo = document.querySelector('bimplus-storage-info');
-    const contact = document.querySelector('bimplus-contact');
-    const touchMenu = document.querySelector('bimplus-touch-menu');
-    const lanMenu = document.querySelector('bimplus-language-menu');
-    const userMenu = document.querySelector('bimplus-user-menu');
-
-    const mainMenu = document.querySelector('bimplus-main-menu');
-
-    // one way of communication with the component - directly define function which will be called 
-    window.BimPlus = {
-      bimplusNavbarClicked : (event) => {
-        alert(`Navbar clicked. Clicked on: ${event.detail}`)
-
-        if (event.detail === 'menu'){
-          mainMenu.classList.toggle("hidden");
-        } 
+  <body>
+    <style>
+      *,
+      html {
+        font-size: 100%;
+        margin: 0;
+        padding: 0;
       }
-    };
 
-    // another way of communication is to capture events
-    storageInfo.addEventListener('bimplusStorageInfoClicked', (event) => {
-      //console.log(`EVENT : bimplusStorageInfoClicked. VALUE: ${event.detail}`);
-      alert(`This is storage info action handler ${event.detail}`);
-    });
+      html {
+        font-size: 62.5%;
+        margin: 0;
+        padding: 0;
+        height: 100%;
+        width: 100vw;
 
-    contact.addEventListener('bimplusContactClicked', (event) => {
-      // console.log(`EVENT : bimplusContactClicked. VALUE: ${event.detail}`);
-      alert(`This is contact action handler ${event.detail}`);
-    });
+        position: fixed;
+        overflow: hidden;
+      }
 
-    touchMenu.addEventListener('bimplusTouchModeSelected', (event) => {
-      var isTouch = event.detail === 'touch';
-      alert(`EVENT : bimplusTouchModeSelected. VALUE: ${event.detail}`);
-      touchMenu.setAttribute('selected-Mode', event.detail);
-      navbar.setAttribute('is-touch', isTouch);
-      mainMenu.setAttribute('is-touch', isTouch);
-      userMenu.setAttribute('is-touch', isTouch);
-    });
+      body {
+        background-color: gray;
+        margin: 0;
+        font: normal 1.28rem "Source Sans Pro", Helvetica, Arial, tahoma,
+          sans-serif !important;
+      }
 
-    lanMenu.addEventListener('bimplusLanguageSelected', (event) => {
-      alert(`EVENT : bimplusLanguageSelected. VALUE: ${event.detail}`);
-      lanMenu.setAttribute('selected-language', event.detail);
-      userMenu.setAttribute('selected-language', event.detail);
-      touchMenu.setAttribute('selected-language', event.detail);
-      storageInfo.setAttribute('selected-language', event.detail);
-      mainMenu.setAttribute('selected-language', event.detail);
-    });
+      bimplus-navbar {
+        position: sticky;
+        z-index: 4;
+        box-shadow: 0 0.3rem 0.5rem 0 rgba(0, 0, 0, 0.26);
+        display: block;
+      }
 
-    userMenu.addEventListener('bimplusUserMenuClicked', (event) => {
-      alert(`EVENT : bimplusUserMenuClicked. INDEX: ${event.detail.index} ACTION: ${event.detail.action}`);
-    });
+      bimplus-main-menu {
+        height: 100%;
+        z-index: 4;
+        position: sticky;
+      }
 
-    mainMenu.addEventListener('bimplusMainMenuClicked', (event) => {
-      alert(`EVENT : bimplusMainMenuClicked. ACTION: ${event.detail.action} TYPE: ${event.detail.type}`);
-    });
+      bimplus-main-menu.hidden {
+        display: none;
+      }
 
-    mainMenu.addEventListener('bimplusMainMenuOverlayClicked', (event) => {
-      alert(`EVENT : bimplusMainMenuOverlayClicked.`);
-    });
+      bimplus-tool-hub {
+        position: absolute;
+        top: 300px;
+        left: 300px;
+      }
 
-  </script>
+      bimplus-floating-bar-project-navigator {
+        position: absolute;
+        top: 600px;
+        left: 600px;
+        display: block; /*default it's shown*/
+      }
 
-</body>
+      bimplus-floating-bar-hide-objects {
+        position: absolute;
+        top: 200px;
+        left: 600px;
+        display: none; /*default it's not shown*/
+      }
+
+      bimplus-floating-bar-isolation-objects {
+        position: absolute;
+        top: 300px;
+        left: 600px;
+        display: none; /*default it's not shown*/
+      }
+
+      bimplus-flat-tree {
+        width: 100%;
+        --flat-tree-folder-font-weight: 100;
+      }
+
+      bimplus-flat-tree.flat-tree div.tree-container {
+        background-color: transparent;
+      }
+
+      .mainView {
+        position: fixed;
+        margin-top: 5.2rem;
+        top: 0;
+        left: 0;
+        height: 100%;
+        width: 100%;
+      }
+    </style>
+
+    <div>
+      <!-- bimplus navbar is container for other components -->
+      <bimplus-navbar
+        team-info="Bimplus demo team"
+        project-info="Quickstart project"
+        is-dev
+        is-navbar-menu-visible
+      >
+        <bimplus-context-menu
+          show-icons="true"
+          trigger-title="Custom context menu"
+        ></bimplus-context-menu>
+
+        <!-- storage info component -->
+        <bimplus-storage-info
+          selected-language="en"
+          used-storage="80"
+        ></bimplus-storage-info>
+
+        <!-- contact component -->
+        <bimplus-contact></bimplus-contact>
+
+        <!-- touch menu component -->
+        <bimplus-touch-menu selected-mode="desktop"></bimplus-touch-menu>
+
+        <!-- language menu component -->
+        <bimplus-language-menu selected-language="en"></bimplus-language-menu>
+
+        <!-- user menu component -->
+        <bimplus-user-menu user-name="Demo user"></bimplus-user-menu>
+      </bimplus-navbar>
+
+      <!-- bimplus main menu component -->
+      <bimplus-main-menu
+        project-name="00 Quickstart project"
+        class="hidden"
+        project-image-url="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTMS36RRWYaTysG471mlormL1bYN3-QIabbo30rDitKRoaDs3EA&s"
+        is-dev
+        show-overlay="false"
+        is-collapsed="false"
+        menu-active-item="bimexplorer"
+      >
+      </bimplus-main-menu>
+    </div>
+
+    <div class="mainView">
+      <bimplus-sidenav>
+        <bimplus-flat-tree
+          enable-select="true"
+          enable-parent-highlighting="true"
+          multi-select="true"
+          one-level-multi-select="false"
+          show-folders-icons="true"
+          show-objects-icons="true"
+          enable-drag-and-drop="true"
+          tree-title="FLAT TREE"
+          tree-data-stringified='[{"name":"Folders3","id":"dbc08cd2-9f50-465b-9b54-da29c4988d07-00","parent":"dbc08cd2-9f50-465b-9b54-da29c4988d07","children":[{"name":"Folder 1","id":"dbc08cd2-9f50-465b-9b54-da29c4988d07-01","parent":"dbc08cd2-9f50-465b-9b54-da29c4988d07-00","children":[{"name":"Folder 1 - 1","id":"dbc08cd2-9f50-465b-9b54-da29c4988d07-02","parent":"dbc08cd2-9f50-465b-9b54-da29c4988d07-01","children":[{"name":"File 1 - 1 - 1","id":"dbc08cd2-9f50-465b-9b54-da29c4988d07-03","parent":"dbc08cd2-9f50-465b-9b54-da29c4988d07-02"},{"name":"File 1 - 1 - 2","id":"dbc08cd2-9f50-465b-9b54-da29c4988d07-04","parent":"dbc08cd2-9f50-465b-9b54-da29c4988d07-02"},{"name":"File 1 - 1 - 3","id":"dbc08cd2-9f50-465b-9b54-da29c4988d07-05","parent":"dbc08cd2-9f50-465b-9b54-da29c4988d07-02"}]},{"name":"File 1 - 2","id":"dbc08cd2-9f50-465b-9b54-da29c4988d07-06","parent":"dbc08cd2-9f50-465b-9b54-da29c4988d07-01"},{"name":"File 1 - 3","id":"dbc08cd2-9f50-465b-9b54-da29c4988d07-07","parent":"dbc08cd2-9f50-465b-9b54-da29c4988d07-01"}]},{"name":"Folder 4","id":"dbc08cd2-9f50-465b-9b54-da29c4988d07-22","parent":"dbc08cd2-9f50-465b-9b54-da29c4988d07-00","children":[]},{"name":"Folder 5","id":"dbc08cd2-9f50-465b-9b54-da29c4988d07-23","parent":"dbc08cd2-9f50-465b-9b54-da29c4988d07-00","children":[{"name":"File 3 - 3 - 3","id":"dbc08cd2-9f50-465b-9b54-da29c4988d07-24","parent":"dbc08cd2-9f50-465b-9b54-da29c4988d07-23"}]}]}]'
+          class="flat-tree"
+        >
+        </bimplus-flat-tree>
+      </bimplus-sidenav>
+
+      <bimplus-tool-hub selected-language="en"></bimplus-tool-hub>
+
+      <bimplus-floating-bar-project-navigator
+        selected-language="en"
+        (actionClicked)="actionClicked($event)"
+      ></bimplus-floating-bar-project-navigator>
+
+      <bimplus-floating-bar-hide-objects
+        selected-language="en"
+        (actionClicked)="actionClicked($event)"
+      ></bimplus-floating-bar-hide-objects>
+
+      <bimplus-floating-bar-isolation-objects
+        selected-language="en"
+        (actionClicked)="actionClicked($event)"
+      ></bimplus-floating-bar-isolation-objects>
+    </div>
+
+    <script
+      src="bimplus-components/polyfills.js"
+      type="module"
+    ></script>
+    <script
+      src="bimplus-components/main.js"
+      type="module"
+    ></script>
+
+    <script>
+      // language menu script
+      const navbar = document.querySelector("bimplus-navbar");
+      const storageInfo = document.querySelector("bimplus-storage-info");
+      const contact = document.querySelector("bimplus-contact");
+      const touchMenu = document.querySelector("bimplus-touch-menu");
+      const lanMenu = document.querySelector("bimplus-language-menu");
+      const userMenu = document.querySelector("bimplus-user-menu");
+
+      const mainMenu = document.querySelector("bimplus-main-menu");
+      const sidenav = document.querySelector("bimplus-sidenav");
+      const toolHub = document.querySelector("bimplus-tool-hub");
+
+      const projectNavigatorFloatingBar = document.querySelector(
+        "bimplus-floating-bar-project-navigator"
+      );
+      const isolateObjectsFloatingBar = document.querySelector(
+        "bimplus-floating-bar-hide-objects"
+      );
+      const hideObjectsFloatingBar = document.querySelector(
+        "bimplus-floating-bar-isolation-objects"
+      );
+
+      let localizedStrings;
+
+      let sideNavbarItems = [
+        {
+          id: "ObjectNavigator",
+          icon: "./assets/images/ObjectManager_20_white.svg",
+          iconActive: "./assets/images/ObjectManager_20_maincolor.svg",
+          iconDisabled: "./assets/images/ObjectManager_20_disabled.svg",
+          text: "_Object navigator",
+        },
+      ];
+
+      let sideNavbarActionItems = [
+        {
+          id: "ViewportSettings",
+          icon: "./assets/images/bimplus_WebIcons_Settings_White.svg",
+          text: "Settings",
+        },
+      ];
+
+      let sideNavbarFooterItem = {
+        id: "shopLink",
+        icon: "./assets/images/GetMore_20_white.svg",
+        text: "Allplan Shop",
+      };
+
+      sidenav.items = sideNavbarItems;
+      sidenav.actionItems = sideNavbarActionItems;
+      sidenav.footerItem = sideNavbarFooterItem;
+
+      let isolationObjectFloatingBarItems = [
+        {
+          buttonId: "cmbIsolateNormal",
+          iconClass: "ui-icon-isolate-menu-normal",
+          title: "_Isolate",
+          active: true, // very first time this button is active
+        },
+        {
+          buttonId: "cmbIsolateClipped",
+          iconClass: "ui-icon-isolate-menu-clipped",
+          title: "_Clipped_isolate",
+          active: false,
+        },
+        {
+          buttonId: "cmbIsolateHidden",
+          iconClass: "ui-icon-isolate-menu-hidden",
+          title: "_Hidden_isolate",
+          active: false,
+        },
+      ];
+      let hideObjectsFloatingBarItems = [
+        {
+          buttonId: "cmButObjHide",
+          iconClass: "ui-icon-hide-object",
+          title: "_Hide object",
+          active: true, // very first time this button is active
+        },
+        {
+          buttonId: "cmButObjTransp",
+          iconClass: "ui-icon-transparent-object",
+          title: "_Transparent_object",
+          active: false,
+        },
+        {
+          buttonId: "cmbButObjHideRestore",
+          iconClass: "ui-icon-restore-hide-object",
+          title: "_Restore_Hide",
+          active: false,
+        },
+      ];
+      isolateObjectsFloatingBar.items = isolationObjectFloatingBarItems;
+      hideObjectsFloatingBar.items = hideObjectsFloatingBarItems;
+
+      navbar.addEventListener("bimplusNavbarClicked", (event) => {
+        alert(`Navbar clicked. Clicked on: ${event.detail}`);
+
+        if (event.detail === "menu") {
+          mainMenu.classList.toggle("hidden");
+        }
+      });
+
+      // another way of communication is to capture events
+      storageInfo.addEventListener("bimplusStorageInfoClicked", (event) => {
+        // Print info
+        //console.log(`EVENT : bimplusStorageInfoClicked. VALUE: ${event.detail}`);
+        alert(`This is storage info action handler ${event.detail}`);
+      });
+
+      contact.addEventListener("bimplusContactClicked", (event) => {
+        // Print info
+        // console.log(`EVENT : bimplusContactClicked. VALUE: ${event.detail}`);
+        alert(`This is contact action handler ${event.detail}`);
+      });
+
+      touchMenu.addEventListener("bimplusTouchModeSelected", (event) => {
+        var isTouch = event.detail === "touch";
+        alert(`EVENT : bimplusTouchModeSelected. VALUE: ${event.detail}`);
+        touchMenu.setAttribute("selected-Mode", event.detail);
+        navbar.setAttribute("is-touch", isTouch);
+        mainMenu.setAttribute("is-touch", isTouch);
+        userMenu.setAttribute("is-touch", isTouch);
+      });
+
+      userMenu.addEventListener("bimplusLanguageSelected", (e) => loadLanguage(e));
+      lanMenu.addEventListener("bimplusLanguageSelected", (e) => loadLanguage(e));
+
+      const loadLanguage = (event) => {
+        alert(`EVENT : bimplusLanguageSelected. VALUE: ${event.detail}`);
+        lanMenu.setAttribute("selected-language", event.detail);
+        userMenu.setAttribute("selected-language", event.detail);
+        touchMenu.setAttribute("selected-language", event.detail);
+        storageInfo.setAttribute("selected-language", event.detail);
+
+        var req = new XMLHttpRequest();
+        req.responseType = "json";
+        req.open("GET", `/assets/languages/strings_${event.detail}.json`, true);
+        req.onload = function () {
+          localizedStrings = req.response;
+          mainMenu.localizedStrings = localizedStrings;
+          sidenav.localizedStrings = localizedStrings;
+          mainMenu.setAttribute("selected-language", event.detail);
+          sidenav.setAttribute("selected-language", event.detail);
+        };
+        req.send(null);
+      }
+
+      userMenu.addEventListener("bimplusUserMenuClicked", (event) => {
+        alert(
+          `EVENT : bimplusUserMenuClicked. INDEX: ${event.detail.index} ACTION: ${event.detail.action}`
+        );
+      });
+
+      mainMenu.addEventListener("bimplusMainMenuClicked", (event) => {
+        alert(
+          `EVENT : bimplusMainMenuClicked. ACTION: ${event.detail.action} TYPE: ${event.detail.type}`
+        );
+      });
+
+      mainMenu.addEventListener("bimplusMainMenuOverlayClicked", (event) => {
+        alert(`EVENT : bimplusMainMenuOverlayClicked.`);
+      });
+
+      // All states are false by default
+      // Set the project navigation bar to active so it will be shown
+      // Set the disabled state for usable floating bars to false
+      let itemStates = [
+        { buttonId: "cmButProjectNavigator", active: true, disabled: false },
+        { buttonId: "cmButObjTranspMenu", disabled: false },
+        { buttonId: "cmButObjSel", disabled: false },
+        { buttonId: "cmButResetObj", disabled: false },
+        { buttonId: "cmButResetVp", disabled: false },
+      ];
+      toolHub.itemStates = itemStates;
+
+      let toggleActiveState = function (buttonId, newActiveState) {
+        toolHub.itemStates = [{ buttonId: buttonId, active: newActiveState }];
+      };
+
+      toolHub.addEventListener("itemClicked", (event) => {
+        console.debug(
+          `toolHubItemClickedHandler called with item = ${event.detail}`,
+          event,
+          toolHub
+        );
+
+        switch (event.detail) {
+          case "cmButResetObj":
+            /* do some business logic here and return so no toggle called*/ return;
+          case "cmButResetVp":
+            toolHub?.toggleSubItemsView(event.detail);
+            return;
+          case "cmButObjTranspMenu":
+            handleHideObjectsFloatingBarClicked();
+            return;
+          case "cmButObjSel":
+            handleIsolationObjectsFloatingBarClicked();
+            return;
+          case "cmButProjectNavigator":
+            handleProjectNavigatorClicked();
+            return;
+          default:
+            alert("Handler not implemented for " + event.detail);
+            break;
+        }
+      });
+      toolHub.addEventListener("subItemClicked", (event) => {
+        console.debug(
+          `toolHubSubItemClickedHandler called with item = ${event.detail}`,
+          event
+        );
+      });
+
+      // #region Hide object floating bar
+      let isFloatingBarHideObjectsVisible = false; // Set this flag based on your logic
+      let handleHideObjectsFloatingBarClicked = function () {
+        isFloatingBarHideObjectsVisible = !isFloatingBarHideObjectsVisible;
+        if (isFloatingBarHideObjectsVisible) {
+          hideObjectsFloatingBar.style.display = "block"; // Show the element
+        } else {
+          hideObjectsFloatingBar.style.display = "none"; // Hide the element
+        }
+        toggleActiveState(
+          "cmButObjTranspMenu",
+          isFloatingBarHideObjectsVisible
+        );
+      };
+
+      hideObjectsFloatingBar.addEventListener("actionClicked", (event) => {
+        const item = event.detail;
+        switch (item) {
+          case "cmButObjHide":
+            hideObjectsFloatingBarItems[0].active = true;
+            hideObjectsFloatingBarItems[1].active = false;
+            break;
+          case "cmButObjTransp":
+            hideObjectsFloatingBarItems[0].active = false;
+            hideObjectsFloatingBarItems[1].active = true;
+            break;
+          case "cmbButObjHideRestore":
+          default:
+            break;
+        }
+
+        // Reset new floating bar button states
+        hideObjectsFloatingBar.items = hideObjectsFloatingBarItems;
+      });
+      // #endregion
+
+      // #region Isolate objects floating bar
+      let isFloatingBarIsolationObjectsVisible = false; // Set this flag based on your logic
+      let handleIsolationObjectsFloatingBarClicked = function () {
+        isFloatingBarIsolationObjectsVisible =
+          !isFloatingBarIsolationObjectsVisible;
+        if (isFloatingBarIsolationObjectsVisible) {
+          isolateObjectsFloatingBar.style.display = "block"; // Show the element
+        } else {
+          isolateObjectsFloatingBar.style.display = "none"; // Hide the element
+        }
+        toggleActiveState("cmButObjSel", isFloatingBarIsolationObjectsVisible);
+      };
+
+      isolateObjectsFloatingBar.addEventListener("actionClicked", (event) => {
+        const item = event.detail;
+        // Set correct activation state of buttons of floating toolbar
+        isolationObjectFloatingBarItems.forEach((barItem) => {
+          if (barItem.buttonId === item) {
+            barItem.active = true;
+          } else if (barItem.active === true) {
+            barItem.active = false;
+          }
+        });
+
+        // Reset new floating bar button states
+        isolateObjectsFloatingBar.items = isolationObjectFloatingBarItems;
+      });
+      // #endregion
+
+      // #region Project navigator floating bar
+      let isFloatingBarProjectNavigatorVisible = true; // Set this flag based on your logic
+      let handleProjectNavigatorClicked = function () {
+        isFloatingBarProjectNavigatorVisible =
+          !isFloatingBarProjectNavigatorVisible;
+        if (isFloatingBarProjectNavigatorVisible) {
+          projectNavigatorFloatingBar.style.display = "block"; // Show the element
+        } else {
+          projectNavigatorFloatingBar.style.display = "none"; // Hide the element
+        }
+        toggleActiveState(
+          "cmButProjectNavigator",
+          isFloatingBarProjectNavigatorVisible
+        );
+      };
+
+      projectNavigatorFloatingBar.addEventListener("actionClicked", (event) => {
+        alert(
+          `Action clicked for project navigator. Clicked on: ${event.detail}`
+        );
+      });
+      // #endregion
+
+      const contextMenu = document.querySelector("bimplus-context-menu");
+      contextMenu.items = [
+        {
+          id: "openFile",
+          title: "Open file",
+          icon: "./assets/images/document.svg",
+          tooltip: "Open file tooltip",
+        },
+        {
+          id: "separator",
+        },
+        {
+          id: "closeFile",
+          title: "Close file",
+          icon: "./assets/images/cross.svg",
+          disabled: (data) => {
+            return true;
+          },
+        },
+        {
+          id: "deleteFile",
+          title: "Delete file",
+          icon: "./assets/images/trash.svg",
+        },
+        {
+          id: "separator",
+        },
+        {
+          id: "renameFile",
+          title: "Rename file",
+          icon: "./assets/images/edit.svg",
+          action: (data) => {
+            console.log(data);
+          },
+          tooltip: "Rename file tooltip",
+        },
+        {
+          id: "renameFile",
+          title:
+            "Looooooooooooooooooooooooooooooooooooooooooooooooooooong item name",
+          icon: "./assets/images/document.svg",
+          action: (data) => {
+            console.log(data);
+          },
+          tooltip:
+            "Looooooooooooooooooooooooooooooooooooooooooooooooooooong item name",
+        },
+      ];
+      contextMenu.data = [
+        {
+          name: "Folder 5",
+          id: "dbc08cd2-9f50-465b-9b54-da29c4988d07-23",
+          parent: "dbc08cd2-9f50-465b-9b54-da29c4988d07-00",
+          children: [
+            {
+              name: "File 3 - 3 - 3",
+              id: "dbc08cd2-9f50-465b-9b54-da29c4988d07-24",
+              parent: "dbc08cd2-9f50-465b-9b54-da29c4988d07-23",
+            },
+          ],
+        },
+      ];
+
+      const flatTree = document.querySelector("bimplus-flat-tree");
+      flatTree.contextMenus = {
+        objectContextMenuitems: [
+          {
+            id: "openFile",
+            title: "Open file",
+            icon: "./assets/images/document.svg",
+            tooltip: "Open file tooltip",
+            disabled: true,
+          },
+          {
+            id: "separator",
+          },
+          {
+            id: "closeFile",
+            title: "Close file",
+            icon: "./assets/images/cross.svg",
+            disabled: (data) => {
+              return true;
+            },
+          },
+          {
+            id: "deleteFile",
+            title: "Delete file",
+            icon: "./assets/images/trash.svg",
+            disabled: (data) => {
+              return false;
+            },
+          },
+          {
+            id: "separator",
+          },
+          {
+            id: "renameFile",
+            title: "Rename file",
+            icon: "./assets/images/edit.svg",
+            action: (data) => {
+              console.log(data);
+            },
+            tooltip: "Rename file tooltip",
+          },
+        ],
+        folderContextMenuitems: [
+          {
+            id: "renameFolder",
+            title: "Rename folder",
+            icon: "./assets/images/document.svg",
+            tooltip: "Rename folder tooltip",
+          },
+          {
+            id: "deletFolder",
+            title: "Delete folder",
+            tooltip: "Delete folder tooltip",
+          },
+        ],
+      };
+    </script>
+  </body>
 </html>
