@@ -15,7 +15,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "bimplus-webcomponents": "0.0.189"
+    "bimplus-webcomponents": "0.0.197"
   },
   "devDependencies": {
     "cpy-cli": "^5.0.0",
