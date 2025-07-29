@@ -3,6 +3,7 @@
   <head>
     <meta charset="utf-8" />
     <link rel="stylesheet" href="./styles.css"/>
+    <link rel="shortcut icon" type="image/x-icon" href="/dist/assets/@bimplus/navigation/assets/favicon.ico">
     <title>Bimplus Component Example</title>
   </head>
 
@@ -33,20 +34,20 @@
           sans-serif !important;
       }
 
-      bimplus-navbar {
+      bimplus-navigation-navbar {
         position: sticky;
         z-index: 4;
         box-shadow: 0 0.3rem 0.5rem 0 rgba(0, 0, 0, 0.26);
         display: block;
       }
 
-      bimplus-main-menu {
+      bimplus-navigation-main-menu {
         height: 100%;
         z-index: 4;
         position: sticky;
       }
 
-      bimplus-main-menu.hidden {
+      bimplus-navigation-main-menu.hidden {
         display: none;
       }
 
@@ -98,7 +99,7 @@
 
     <div>
       <!-- bimplus navbar is container for other components -->
-      <bimplus-navbar
+      <bimplus-navigation-navbar
         team-info="Bimplus demo team"
         project-info="Quickstart project"
         is-dev
@@ -110,26 +111,26 @@
         ></bimplus-context-menu>
 
         <!-- storage info component -->
-        <bimplus-storage-info
+        <bimplus-navigation-storage-info
           selected-language="en"
           used-storage="80"
-        ></bimplus-storage-info>
+        ></bimplus-navigation-storage-info>
 
         <!-- contact component -->
-        <bimplus-contact></bimplus-contact>
+        <bimplus-navigation-contact></bimplus-navigation-contact>
 
         <!-- touch menu component -->
-        <bimplus-touch-menu selected-mode="desktop"></bimplus-touch-menu>
+        <bimplus-navigation-touch-menu selected-mode="desktop"></bimplus-navigation-touch-menu>
 
         <!-- language menu component -->
-        <bimplus-language-menu selected-language="en"></bimplus-language-menu>
+        <bimplus-navigation-language-menu selected-language="en"></bimplus-navigation-language-menu>
 
         <!-- user menu component -->
-        <bimplus-user-menu user-name="Demo user"></bimplus-user-menu>
-      </bimplus-navbar>
+        <bimplus-navigation-user-menu user-name="Demo user"></bimplus-navigation-user-menu>
+      </bimplus-navigation-navbar>
 
       <!-- bimplus main menu component -->
-      <bimplus-main-menu
+      <bimplus-navigation-main-menu
         project-name="00 Quickstart project"
         class="hidden"
         project-image-url="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTMS36RRWYaTysG471mlormL1bYN3-QIabbo30rDitKRoaDs3EA&s"
@@ -138,7 +139,7 @@
         is-collapsed="false"
         menu-active-item="bimexplorer"
       >
-      </bimplus-main-menu>
+      </bimplus-navigation-main-menu>
     </div>
 
     <div class="mainView">
@@ -184,17 +185,27 @@
       src="bimplus-components/main.js"
       type="module"
     ></script>
+    <script
+      src="bimplus-components/polyfills.js"
+      type="module"
+    ></script>
+    <script
+      src="bimplus-components/main.js"
+      type="module"
+    ></script>
+    <script type="module" src="/dist/assets/@bimplus/navigation/polyfills.js"></script>
+    <script type="module" src="/dist/assets/@bimplus/navigation/main.js"></script>
 
     <script>
       // language menu script
-      const navbar = document.querySelector("bimplus-navbar");
-      const storageInfo = document.querySelector("bimplus-storage-info");
-      const contact = document.querySelector("bimplus-contact");
-      const touchMenu = document.querySelector("bimplus-touch-menu");
-      const lanMenu = document.querySelector("bimplus-language-menu");
-      const userMenu = document.querySelector("bimplus-user-menu");
+      const navbar = document.querySelector("bimplus-navigation-navbar");
+      const storageInfo = document.querySelector("bimplus-navigation-storage-info");
+      const contact = document.querySelector("bimplus-navigation-contact");
+      const touchMenu = document.querySelector("bimplus-navigation-touch-menu");
+      const lanMenu = document.querySelector("bimplus-navigation-language-menu");
+      const userMenu = document.querySelector("bimplus-navigation-user-menu");
 
-      const mainMenu = document.querySelector("bimplus-main-menu");
+      const mainMenu = document.querySelector("bimplus-navigation-main-menu");
       const sidenav = document.querySelector("bimplus-sidenav");
       const toolHub = document.querySelector("bimplus-tool-hub");
 
@@ -316,20 +327,33 @@
 
       const loadLanguage = (event) => {
         alert(`EVENT : bimplusLanguageSelected. VALUE: ${event.detail}`);
-        lanMenu.setAttribute("selected-language", event.detail);
-        userMenu.setAttribute("selected-language", event.detail);
-        touchMenu.setAttribute("selected-language", event.detail);
-        storageInfo.setAttribute("selected-language", event.detail);
-
+        
         var req = new XMLHttpRequest();
         req.responseType = "json";
-        req.open("GET", `/assets/languages/strings_${event.detail}.json`, true);
+        req.open("GET", `/dist/assets/@bimplus/navigation/languages/strings_${event.detail}.json`, true);
         req.onload = function () {
           localizedStrings = req.response;
           mainMenu.localizedStrings = localizedStrings;
           sidenav.localizedStrings = localizedStrings;
+          lanMenu.localizedStrings = localizedStrings;
+          userMenu.localizedStrings = localizedStrings;
+          touchMenu.localizedStrings = localizedStrings;
+          storageInfo.localizedStrings = localizedStrings;
+          toolHub.localizedStrings = localizedStrings;
+          projectNavigatorFloatingBar.localizedStrings = localizedStrings;
+          isolateObjectsFloatingBar.localizedStrings = localizedStrings;
+          hideObjectsFloatingBar.localizedStrings = localizedStrings;
+
           mainMenu.setAttribute("selected-language", event.detail);
           sidenav.setAttribute("selected-language", event.detail);
+          lanMenu.setAttribute("selected-language", event.detail);
+          userMenu.setAttribute("selected-language", event.detail);
+          touchMenu.setAttribute("selected-language", event.detail);
+          storageInfo.setAttribute("selected-language", event.detail);
+          toolHub.setAttribute("selected-language", event.detail);
+          projectNavigatorFloatingBar.setAttribute("selected-language", event.detail);
+          isolateObjectsFloatingBar.setAttribute("selected-language", event.detail);
+          hideObjectsFloatingBar.setAttribute("selected-language", event.detail);
         };
         req.send(null);
       }
@@ -486,6 +510,282 @@
           `Action clicked for project navigator. Clicked on: ${event.detail}`
         );
       });
+
+      let archModel = {
+        id: "550e8400-e29b-41d4-a716-446655440001",
+        name: "Architectural Model",
+        currentRevision: 3,
+        latestRevision: 5,
+        isExpanded: true,
+        divisionTopologyId: "550e8400-e29b-41d4-a716-446655440002",
+        isVisible: true,
+        opacity: 1.0,
+        userOpacity: null,
+        isOpaque: true,
+      };
+
+      let archModelLayers = [
+        {
+          id: "0f106af0-a919-44c5-b211-15bd5ef620b6",
+          name: "Building Layer",
+          opacity: 1.0,
+          userOpacity: null,
+          isVisible: true,
+          isOpaque: true,
+          parentModel: archModel
+        },
+        {
+          id: "11555f6f-10ec-4180-88b3-699738c079c3",
+          name: "Door Window",
+          opacity: 1.0,
+          userOpacity: null,
+          isVisible: true,
+          isOpaque: true,
+          parentModel: archModel
+        },
+        {
+          id: "09e623d4-1e12-4a77-b358-ea1d0b28e4a7",
+          name: "Rooms",
+          opacity: 1.0,
+          userOpacity: null,
+          isVisible: false,
+          isOpaque: true,
+          parentModel: archModel
+        },
+        {
+          id: "30114b52-bc05-47c1-80b5-c7d5485d5840",
+          name: "Finish",
+          opacity: 1.0,
+          userOpacity: null,
+          isVisible: true,
+          isOpaque: true,
+          parentModel: archModel
+        }
+      ];
+
+      // Assign layers to the architectural model
+      archModel.layers = archModelLayers;
+      archModel.isSemiVisible = archModelLayers.some((layer) => !layer.isVisible); // Check if any layer is not visible to set semi-visible state
+
+      let structModel = {
+        id: "550e8400-e29b-41d4-a716-446655440003",
+        name: "Structural Model",
+        currentRevision: 2,
+        latestRevision: 2,
+        isExpanded: false,
+        divisionTopologyId: "550e8400-e29b-41d4-a716-446655440004",
+        isVisible: true,
+        opacity: 0.8,
+        userOpacity: 0.6,
+        isOpaque: true
+      };
+
+      let structModelLayers = [
+        {
+          id: "dd5cc7d0-72fe-46aa-ba62-dcd86729bd2f",
+          name: "Reinforcement Layer",
+          opacity: 1.0,
+          userOpacity: null,
+          isVisible: true,
+          isOpaque: true,
+          parentModel: structModel
+        },
+        {
+          id: "d625ce34-b38c-4c97-b663-3e4f26e301c8",
+          name: "Steel Design",
+          opacity: 1.0,
+          userOpacity: null,
+          isVisible: true,
+          isOpaque: true,
+          parentModel: structModel
+        },
+        {
+          id: "30114b52-bc05-47c1-80b5-c7d5485d5831",
+          name: "General Objects",
+          opacity: 1.0,
+          userOpacity: null,
+          isVisible: true,
+          isOpaque: true,
+          parentModel: structModel
+        },
+        {
+          id: "72b7e0ba-ae1a-4a71-b1ec-ad8f553fb3bc",
+          name: "Project Connection",
+          opacity: 1.0,
+          userOpacity: null,
+          isVisible: false,
+          isOpaque: true,
+          parentModel: structModel
+        }
+      ];
+      // Assign layers to the structural model
+      structModel.layers = structModelLayers;
+      structModel.isSemiVisible = structModelLayers.some((layer) => !layer.isVisible); // Check if any layer is not visible to set semi-visible state
+
+      let projectData = {
+        id: "550e8400-e29b-41d4-a716-446655440000",
+        name: "Office Building Project",
+        teamSlug: "construction-team-alpha",
+        models: [
+          archModel,
+          structModel
+        ]
+      };
+
+      projectNavigatorFloatingBar.project = projectData;
+
+      // Opacity constants for managing transparency states
+      let defaultOpacity = 1.0; // Full opacity (completely opaque)
+      let transparentOpacity = 0.5; // Semi-transparent opacity value
+
+      /**
+       * Updates model visibility and semi-visible state based on its layers
+       * @param {Object} model - The model object to update
+       */
+      function updateModelVisibilityState(model) {
+        const countInvisibleLayers = model.layers.filter((l) => !l.isVisible).length;
+        if (countInvisibleLayers === model.layers.length) { 
+          // All layers are invisible - hide the entire model
+          model.isVisible = false;
+          model.isSemiVisible = false;
+          console.log(`Model ${model.name} visibility set to false because all layers are invisible`);
+        } else {
+          // At least one layer is visible - show the model
+          model.isVisible = true;
+          // Set semi-visible state if some (but not all) layers are invisible
+          model.isSemiVisible = countInvisibleLayers > 0;
+          console.log(`Model ${model.name} visibility set to true because at least one layer is visible`);
+        }
+      }
+
+      /**
+       * Updates model opacity and semi-opaque state based on its layers
+       * @param {Object} model - The model object to update
+       */
+      function updateModelOpacityState(model) {
+        const countTransparentLayers = model.layers.filter((l) => !l.isOpaque).length;
+        if (countTransparentLayers === model.layers.length) {
+          // All layers are transparent - set model to transparent
+          model.isOpaque = false;
+          model.isSemiOpaque = false;
+          console.log(`Model ${model.name} opacity set to false because all layers are transparent`);
+        } else {
+          // At least one layer is opaque - set model to opaque
+          model.isOpaque = true;
+          // Set semi-opaque state if some (but not all) layers are transparent
+          model.isSemiOpaque = countTransparentLayers > 0;
+          console.log(`Model ${model.name} opacity set to true because at least one layer is opaque`);
+        }
+      }
+
+      /**
+       * Synchronizes all layers in a model to match the model's visibility state
+       * @param {Object} model - The model whose layers should be synchronized
+       */
+      function syncLayersVisibility(model) {
+        model.layers.forEach((layer) => {
+          layer.isVisible = model.isVisible; // Sync layer visibility with parent model
+          console.log(`Layer ${layer.name} visibility set to ${layer.isVisible}`);
+        });
+      }
+
+      /**
+       * Synchronizes all layers in a model to match the model's opacity state
+       * @param {Object} model - The model whose layers should be synchronized
+       */
+      function syncLayersOpacity(model) {
+        model.layers.forEach((layer) => {
+          layer.isOpaque = model.isOpaque; // Sync layer opacity state with parent model
+          // Update the actual opacity value based on the opaque state
+          layer.opacity = layer.isOpaque ? defaultOpacity : transparentOpacity;
+        });
+      }
+
+      /**
+       * Finds a model by ID from the project data
+       * @param {string} modelId - The ID of the model to find
+       * @returns {Object|undefined} The model object or undefined if not found
+       */
+      function findModelById(modelId) {
+        return projectData.models.find((m) => m.id === modelId);
+      }
+
+      /**
+       * Finds a layer by ID within a specific model
+       * @param {Object} model - The model to search within
+       * @param {string} layerId - The ID of the layer to find
+       * @returns {Object|undefined} The layer object or undefined if not found
+       */
+      function findLayerById(model, layerId) {
+        return model.layers.find((l) => l.id === layerId);
+      }
+
+      // Event handler for toggling visibility of entire models
+      // When a model's visibility is toggled, all its layers inherit the same visibility state
+      projectNavigatorFloatingBar.addEventListener("toggleVisibilityOfModel", (event) => {
+        console.dir(event);
+        const model = findModelById(event.detail.id);
+        if (model) {
+          model.isVisible = !model.isVisible; // Toggle the model's visibility state
+          model.isSemiVisible = false; // Reset semi-visible state when explicitly toggling model
+          console.log(`Model ${model.name} visibility toggled to ${model.isVisible}`);
+
+          // Synchronize all layers within the model to match the model's visibility
+          syncLayersVisibility(model);
+        }
+      });
+
+      // Event handler for toggling visibility of individual layers within a model
+      // This also manages the parent model's visibility and semi-visible states
+      projectNavigatorFloatingBar.addEventListener("toggleVisibilityOfLayer", (event) => {
+        console.dir(event);
+        const model = findModelById(event.detail.parentModel.id);
+        if (model) {
+          const layer = findLayerById(model, event.detail.id);
+          if (layer) {
+            layer.isVisible = !layer.isVisible; // Toggle the individual layer's visibility
+            console.log(`Layer ${layer.name} visibility toggled to ${layer.isVisible}`);
+          }
+
+          // Update model visibility based on layer states
+          updateModelVisibilityState(model);
+        }
+      });
+
+      // Event handler for toggling opacity of entire models
+      // When a model's opacity is toggled, all its layers inherit the same opacity state
+      projectNavigatorFloatingBar.addEventListener("toggleOpacityOfModel", (event) => {
+        console.dir(event);
+        const model = findModelById(event.detail.id);
+        if (model) {
+          model.isOpaque = !model.isOpaque; // Toggle the model's opacity state
+          model.isSemiOpaque = false; // Reset semi-opaque state when explicitly toggling model
+
+          // Synchronize all layers within the model to match the model's opacity
+          syncLayersOpacity(model);
+        }
+      });
+
+      // Event handler for toggling opacity of individual layers within a model
+      // This also manages the parent model's opacity and semi-opaque states
+      projectNavigatorFloatingBar.addEventListener("toggleOpacityOfLayer", (event) => {
+        console.dir(event);
+        const model = findModelById(event.detail.parentModel.id);
+        if (model) {
+          const layer = findLayerById(model, event.detail.id);
+          if (layer) {
+            layer.isOpaque = !layer.isOpaque; // Toggle the individual layer's opacity state
+            // Update the actual opacity value based on the new opaque state
+            layer.opacity = layer.isOpaque ? defaultOpacity : transparentOpacity;
+          }
+
+          // Update model opacity state based on layer opacity states
+          updateModelOpacityState(model);
+        }
+      });
+
+      projectNavigatorFloatingBar.expandedModelTree = true; // Set to true to show the expanded model tree by default
+
       // #endregion
 
       const contextMenu = document.querySelector("bimplus-context-menu");

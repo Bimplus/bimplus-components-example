@@ -8,14 +8,16 @@
     "copyWholeDist": "cpy \"./node_modules/bimplus-webcomponents/dist/**\" \"./dist/\"",
     "copyIndex": "cpy \"./index.html\" \"./dist\"",
     "copyLocaleImages": "cpy \"./assets/images/**\" \"./dist/assets/images\"",
-    "build": "npm run cleanDist && npm run copyWholeDist && npm run copyLocaleImages && npm run copyIndex",
+    "copyNavigationAssets": "cpy \"./node_modules/@bimplus/navigation-web/dist/**\" \"./dist/\"",
+    "build": "npm run cleanDist && npm run copyWholeDist && npm run copyLocaleImages && npm run copyIndex && npm run copyNavigationAssets",
     "serve": "npm run build && live-server --open=dist --verbose",
     "start": "npm run serve"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "bimplus-webcomponents": "0.0.197"
+    "@bimplus/navigation-web": "0.0.201",
+    "bimplus-webcomponents": "0.0.201"
   },
   "devDependencies": {
     "cpy-cli": "^5.0.0",
