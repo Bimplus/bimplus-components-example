@@ -16,12 +16,12 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@bimplus/navigation-web": "0.0.201",
-    "bimplus-webcomponents": "0.0.201"
+    "@bimplus/navigation-web": "0.0.211",
+    "bimplus-webcomponents": "0.0.211"
   },
   "devDependencies": {
-    "cpy-cli": "^5.0.0",
+    "cpy-cli": "^6.0.0",
     "live-server": "^1.2.2",
-    "rimraf": "^6.0.1"
+    "rimraf": "^6.1.0"
   }
 }
