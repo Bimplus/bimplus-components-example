@@ -10,7 +10,7 @@
     "copyLocaleImages": "cpy \"./assets/images/**\" \"./dist/assets/images\"",
     "copyNavigationAssets": "cpy \"./node_modules/@bimplus/navigation-web/dist/**\" \"./dist/\"",
     "build": "npm run cleanDist && npm run copyWholeDist && npm run copyLocaleImages && npm run copyIndex && npm run copyNavigationAssets",
-    "serve": "npm run build && live-server --open=dist --verbose",
+    "serve": "npm run build && http-server ./dist",
     "start": "npm run serve"
   },
   "author": "",
@@ -21,7 +21,7 @@
   },
   "devDependencies": {
     "cpy-cli": "^6.0.0",
-    "live-server": "^1.2.2",
+    "http-server": "14.1.1",
     "rimraf": "^6.1.0"
   }
 }
